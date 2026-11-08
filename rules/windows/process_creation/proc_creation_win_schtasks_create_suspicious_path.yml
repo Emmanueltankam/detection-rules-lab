@@ -1,0 +1,38 @@
+title: Scheduled Task Created From a User-Writable Path
+id: d4cfd964-58e3-4308-91ca-d6f6cf599916
+status: test
+description: |
+  Detects schtasks.exe creating a task whose command points to a user-writable or temporary folder.
+  Malware commonly persists this way because those folders do not require administrator rights.
+references:
+  - https://attack.mitre.org/techniques/T1053/005/
+  - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-create
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.persistence
+  - attack.execution
+  - attack.t1053.005
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    Image|endswith: '\schtasks.exe'
+  selection_create:
+    CommandLine|contains:
+      - '/create'
+      - '-create'
+  selection_path:
+    CommandLine|contains:
+      - '\AppData\'
+      - '\Users\Public\'
+      - '\Windows\Temp\'
+      - '\ProgramData\'
+      - '%TEMP%'
+      - '%APPDATA%'
+      - '%PUBLIC%'
+  condition: all of selection_*
+falsepositives:
+  - Some legitimate updaters (browsers, collaboration tools) register per-user tasks from AppData
+level: medium
