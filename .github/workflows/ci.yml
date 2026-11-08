@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detections:
+    name: Validate, test & convert rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install tooling
+        run: pip install -r requirements.txt
+
+      - name: Sigma syntax & quality checks
+        run: sigma check --fail-on-issues --exclude attacktag rules/
+
+      - name: ATT&CK tag validation against the latest MITRE data (informational)
+        continue-on-error: true
+        run: sigma check --fail-on-issues rules/
+
+      - name: Detection tests (true positives / true negatives / metadata)
+        run: pytest -v
+
+      - name: ATT&CK coverage report is up to date
+        run: python tools/build_coverage.py --check
+
+      - name: Convert rules to Splunk & Elastic queries
+        run: bash tools/convert.sh dist
+
+      - name: Publish SIEM queries
+        uses: actions/upload-artifact@v4
+        with:
+          name: siem-queries
+          path: dist/
+
+  secrets:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
