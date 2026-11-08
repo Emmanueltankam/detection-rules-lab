@@ -1,0 +1,23 @@
+# ATT&CK technique and tactic names used by the coverage report (ATT&CK v19).
+# Every technique tagged in a rule must be listed here — the test suite enforces it.
+tactics:
+  initial-access: Initial Access
+  execution: Execution
+  persistence: Persistence
+  privilege-escalation: Privilege Escalation
+  stealth: Stealth
+  defense-impairment: Defense Impairment
+  credential-access: Credential Access
+  impact: Impact
+techniques:
+  T1003.001: "OS Credential Dumping: LSASS Memory"
+  T1027: "Obfuscated Files or Information"
+  T1053.005: "Scheduled Task/Job: Scheduled Task"
+  T1059.001: "Command and Scripting Interpreter: PowerShell"
+  T1059.004: "Command and Scripting Interpreter: Unix Shell"
+  T1070.003: "Indicator Removal: Clear Command History"
+  T1098: "Account Manipulation"
+  T1190: "Exploit Public-Facing Application"
+  T1490: "Inhibit System Recovery"
+  T1685.005: "Disable or Modify Tools: Clear Windows Event Logs"
+  T1690: "Prevent Command History Logging"
