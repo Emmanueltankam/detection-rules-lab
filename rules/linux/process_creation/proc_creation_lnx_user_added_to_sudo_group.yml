@@ -1,0 +1,44 @@
+title: Linux User Added To sudo Or wheel Group
+id: 55643f01-7cd7-4d4e-9b13-5ea7d3c91a90
+status: test
+description: |
+  Detects usermod or gpasswd adding an account to the sudo or wheel group, which grants full root access.
+  Attackers do this to keep privileged access after an initial compromise.
+references:
+  - https://attack.mitre.org/techniques/T1098/
+  - https://man7.org/linux/man-pages/man8/usermod.8.html
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.persistence
+  - attack.privilege-escalation
+  - attack.t1098
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection_usermod:
+    Image|endswith: '/usermod'
+    CommandLine|contains:
+      - ' -aG '
+      - ' -G '
+      - ' --groups '
+  selection_usermod_group:
+    CommandLine|contains:
+      - ' sudo '
+      - ',sudo '
+      - ' sudo,'
+      - ' wheel '
+      - ',wheel '
+      - ' wheel,'
+  selection_gpasswd:
+    Image|endswith: '/gpasswd'
+    CommandLine|contains: ' -a '
+  selection_gpasswd_group:
+    CommandLine|endswith:
+      - ' sudo'
+      - ' wheel'
+  condition: (selection_usermod and selection_usermod_group) or (selection_gpasswd and selection_gpasswd_group)
+falsepositives:
+  - Legitimate onboarding of administrators; correlate with a change ticket
+level: medium
