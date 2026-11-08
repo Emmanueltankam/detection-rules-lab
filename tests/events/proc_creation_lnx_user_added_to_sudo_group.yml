@@ -1,0 +1,17 @@
+match:
+  - description: usermod append to sudo
+    Image: '/usr/sbin/usermod'
+    CommandLine: 'usermod -aG sudo backdoor'
+  - description: usermod with several groups including wheel
+    Image: '/usr/sbin/usermod'
+    CommandLine: 'usermod -aG docker,wheel svc_ci'
+  - description: gpasswd add to sudo
+    Image: '/usr/bin/gpasswd'
+    CommandLine: 'gpasswd -a backdoor sudo'
+no_match:
+  - description: usermod adding to docker only
+    Image: '/usr/sbin/usermod'
+    CommandLine: 'usermod -aG docker alice'
+  - description: gpasswd removing from sudo
+    Image: '/usr/bin/gpasswd'
+    CommandLine: 'gpasswd -d alice sudo'
