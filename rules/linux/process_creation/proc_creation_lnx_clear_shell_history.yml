@@ -1,0 +1,42 @@
+title: Linux Shell History Tampering
+id: da5f560c-91e2-496a-b5e6-ff59da4db90d
+status: test
+description: |
+  Detects deletion, truncation or redirection to /dev/null of shell history files, and history-disabling
+  commands passed to a shell. Attackers do this to erase the trace of the commands they typed.
+references:
+  - https://attack.mitre.org/techniques/T1070/003/
+  - https://attack.mitre.org/techniques/T1690/
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.stealth
+  - attack.t1070.003
+  - attack.defense-impairment
+  - attack.t1690
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection_tool:
+    Image|endswith:
+      - '/rm'
+      - '/shred'
+      - '/truncate'
+      - '/ln'
+      - '/unlink'
+  selection_history_file:
+    CommandLine|contains:
+      - '.bash_history'
+      - '.zsh_history'
+      - '.sh_history'
+  selection_shell_builtin:
+    CommandLine|contains:
+      - 'history -c'
+      - 'unset HISTFILE'
+      - 'HISTFILESIZE=0'
+      - 'HISTSIZE=0'
+  condition: (selection_tool and selection_history_file) or selection_shell_builtin
+falsepositives:
+  - Hardening scripts that intentionally disable history for service accounts
+level: high
