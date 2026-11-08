@@ -1,0 +1,12 @@
+match:
+  - description: Security log cleared
+    EventID: 1102
+    Provider_Name: 'Microsoft-Windows-Eventlog'
+    SubjectUserName: 'adm-lab'
+no_match:
+  - description: Same ID from another provider
+    EventID: 1102
+    Provider_Name: 'Some-Other-Provider'
+  - description: Successful logon
+    EventID: 4624
+    Provider_Name: 'Microsoft-Windows-Security-Auditing'
