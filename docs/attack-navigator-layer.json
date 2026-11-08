@@ -1,0 +1,109 @@
+{
+  "name": "detection-rules-lab coverage",
+  "versions": {
+    "layer": "4.5",
+    "navigator": "5.1.0"
+  },
+  "domain": "enterprise-attack",
+  "description": "Techniques covered by the Sigma rules in this repository.",
+  "techniques": [
+    {
+      "techniqueID": "T1003.001",
+      "score": 3,
+      "comment": "LSASS Memory Dump Via Comsvcs.dll",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1027",
+      "score": 2,
+      "comment": "PowerShell Execution With Encoded Command",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.005",
+      "score": 2,
+      "comment": "Scheduled Task Created From a User-Writable Path",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059.001",
+      "score": 2,
+      "comment": "PowerShell Execution With Encoded Command",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059.004",
+      "score": 3,
+      "comment": "Linux Reverse Shell Command Patterns",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1070.003",
+      "score": 3,
+      "comment": "Linux Shell History Tampering",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1098",
+      "score": 3,
+      "comment": "Linux User Added To sudo Or wheel Group; Account Added To a Highly Privileged Group",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1190",
+      "score": 3,
+      "comment": "SQL Injection Patterns In URI Query",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1490",
+      "score": 3,
+      "comment": "Shadow Copy or Backup Catalog Deletion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1685.005",
+      "score": 3,
+      "comment": "Windows Security Event Log Cleared",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1690",
+      "score": 3,
+      "comment": "Linux Shell History Tampering",
+      "enabled": true,
+      "showSubtechniques": false
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#c6dbef",
+      "#2171b5",
+      "#08306b"
+    ],
+    "minValue": 1,
+    "maxValue": 4
+  },
+  "legendItems": [
+    {
+      "label": "medium",
+      "color": "#6baed6"
+    },
+    {
+      "label": "high",
+      "color": "#2171b5"
+    }
+  ],
+  "showTacticRowBackground": true,
+  "selectTechniquesAcrossTactics": true
+}
