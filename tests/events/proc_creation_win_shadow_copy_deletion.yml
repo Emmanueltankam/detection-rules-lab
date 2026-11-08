@@ -1,0 +1,20 @@
+match:
+  - description: vssadmin quiet deletion (ransomware classic)
+    Image: 'C:\Windows\System32\vssadmin.exe'
+    CommandLine: 'vssadmin.exe Delete Shadows /All /Quiet'
+  - description: WMIC shadow copy deletion
+    Image: 'C:\Windows\System32\wbem\WMIC.exe'
+    CommandLine: 'wmic shadowcopy delete'
+  - description: Backup catalog wiped
+    Image: 'C:\Windows\System32\wbadmin.exe'
+    CommandLine: 'wbadmin delete catalog -quiet'
+  - description: Boot recovery disabled
+    Image: 'C:\Windows\System32\bcdedit.exe'
+    CommandLine: 'bcdedit /set {default} recoveryenabled No'
+no_match:
+  - description: Listing shadow copies is benign
+    Image: 'C:\Windows\System32\vssadmin.exe'
+    CommandLine: 'vssadmin list shadows'
+  - description: Creating a backup
+    Image: 'C:\Windows\System32\wbadmin.exe'
+    CommandLine: 'wbadmin start backup -backupTarget:E: -include:C: -quiet'
