@@ -1,0 +1,40 @@
+title: PowerShell Execution With Encoded Command
+id: 1110bfa5-c86b-4820-9628-a8f5b0660991
+status: test
+description: |
+  Detects PowerShell started with an encoded command line (-EncodedCommand and its short forms).
+  Attackers base64-encode scripts to hide them from casual review and from naive string-based detections.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://attack.mitre.org/techniques/T1027/
+  - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.stealth
+  - attack.t1027
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith:
+        - '\powershell.exe'
+        - '\pwsh.exe'
+    - OriginalFileName:
+        - 'PowerShell.EXE'
+        - 'pwsh.dll'
+  selection_cli:
+    CommandLine|contains:
+      - ' -e '
+      - ' -ec '
+      - ' -en '
+      - ' -enc '
+      - ' -enco'
+      - ' -EncodedCommand '
+  condition: all of selection_*
+falsepositives:
+  - Management agents (SCCM, Intune, some RMM tools) that wrap legitimate scripts in base64
+level: medium
