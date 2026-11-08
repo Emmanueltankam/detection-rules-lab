@@ -1,0 +1,23 @@
+match:
+  - description: UNION-based, URL-encoded
+    cs-method: 'GET'
+    cs-uri-stem: '/api/v1/accounts'
+    cs-uri-query: 'id=1%20UNION%20SELECT%20username,password%20FROM%20users--'
+    sc-status: 500
+  - description: Boolean-based
+    cs-method: 'GET'
+    cs-uri-stem: '/login'
+    cs-uri-query: "user=admin' OR '1'='1&pass=x"
+  - description: Time-based blind
+    cs-method: 'GET'
+    cs-uri-stem: '/api/v1/transactions'
+    cs-uri-query: 'from=2026-01-01&sort=amount;SELECT SLEEP(5)'
+no_match:
+  - description: Normal paginated API call
+    cs-method: 'GET'
+    cs-uri-stem: '/api/v1/transactions'
+    cs-uri-query: 'from=2026-01-01&to=2026-01-31&page=2'
+  - description: Search containing the word select
+    cs-method: 'GET'
+    cs-uri-stem: '/help'
+    cs-uri-query: 'q=how+to+select+an+account'
