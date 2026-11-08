@@ -1,0 +1,14 @@
+match:
+  - description: Persistence from AppData at logon
+    Image: 'C:\Windows\System32\schtasks.exe'
+    CommandLine: 'schtasks /create /sc onlogon /tn "OneDrive Sync" /tr "C:\Users\bob\AppData\Roaming\upd.exe"'
+  - description: Task pointing to the Public folder
+    Image: 'C:\Windows\System32\schtasks.exe'
+    CommandLine: 'schtasks.exe /Create /SC MINUTE /MO 15 /TN Updater /TR C:\Users\Public\run.bat /F'
+no_match:
+  - description: Querying tasks
+    Image: 'C:\Windows\System32\schtasks.exe'
+    CommandLine: 'schtasks /query /fo LIST /v'
+  - description: Task created for a binary in Program Files
+    Image: 'C:\Windows\System32\schtasks.exe'
+    CommandLine: 'schtasks /create /sc daily /tn Backup /tr "C:\Program Files\Backup\backup.exe" /st 02:00'
