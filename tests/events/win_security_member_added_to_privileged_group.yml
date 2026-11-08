@@ -1,0 +1,20 @@
+match:
+  - description: Local Administrators (language-independent SID)
+    EventID: 4732
+    TargetSid: 'S-1-5-32-544'
+    TargetUserName: 'Administrateurs'
+    MemberName: 'CN=bob,OU=Users,DC=lab,DC=local'
+  - description: Domain Admins
+    EventID: 4728
+    TargetSid: 'S-1-5-21-1004336348-1177238915-682003330-512'
+    TargetUserName: 'Domain Admins'
+  - description: Enterprise Admins
+    EventID: 4756
+    TargetSid: 'S-1-5-21-1004336348-1177238915-682003330-519'
+no_match:
+  - description: Local Remote Desktop Users group
+    EventID: 4732
+    TargetSid: 'S-1-5-32-555'
+  - description: Ordinary domain group
+    EventID: 4728
+    TargetSid: 'S-1-5-21-1004336348-1177238915-682003330-1105'
