@@ -1,0 +1,13 @@
+match:
+  - description: MiniDump export called by name
+    Image: 'C:\Windows\System32\rundll32.exe'
+    OriginalFileName: 'RUNDLL32.EXE'
+    CommandLine: 'rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump 624 C:\Windows\Temp\out.dmp full'
+  - description: MiniDump export called by ordinal
+    Image: 'C:\Windows\System32\rundll32.exe'
+    CommandLine: 'rundll32.exe comsvcs.dll #24 624 C:\Users\Public\l.dmp full'
+no_match:
+  - description: Unrelated rundll32 usage
+    Image: 'C:\Windows\System32\rundll32.exe'
+    OriginalFileName: 'RUNDLL32.EXE'
+    CommandLine: 'rundll32.exe shell32.dll,Control_RunDLL desk.cpl'
