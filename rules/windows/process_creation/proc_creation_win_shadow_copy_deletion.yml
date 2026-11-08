@@ -1,0 +1,42 @@
+title: Shadow Copy or Backup Catalog Deletion
+id: 52643d1b-697b-481a-a99f-38bd7d0f39fa
+status: test
+description: |
+  Detects deletion of Volume Shadow Copies, of the Windows backup catalog, or disabling of boot recovery.
+  This is a classic ransomware step performed right before encryption to prevent restoration.
+references:
+  - https://attack.mitre.org/techniques/T1490/
+  - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/vssadmin-delete-shadows
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.impact
+  - attack.t1490
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_wbadmin:
+    Image|endswith: '\wbadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'catalog'
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'ignoreallfailures'
+  condition: 1 of selection_*
+falsepositives:
+  - Rare manual storage maintenance by administrators
+level: high
