@@ -1,0 +1,17 @@
+match:
+  - description: History file deleted
+    Image: '/usr/bin/rm'
+    CommandLine: 'rm -f /root/.bash_history'
+  - description: History file linked to /dev/null
+    Image: '/usr/bin/ln'
+    CommandLine: 'ln -sf /dev/null /home/bob/.bash_history'
+  - description: History disabled through a shell
+    Image: '/usr/bin/bash'
+    CommandLine: 'bash -c unset HISTFILE; export HISTSIZE=0'
+no_match:
+  - description: Reading history is not tampering
+    Image: '/usr/bin/cat'
+    CommandLine: 'cat /home/bob/.bash_history'
+  - description: Deleting an unrelated file
+    Image: '/usr/bin/rm'
+    CommandLine: 'rm -rf /tmp/build'
