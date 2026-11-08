@@ -1,0 +1,34 @@
+title: Account Added To a Highly Privileged Group
+id: a1616779-5bf8-4a61-943b-7fe98d464094
+status: test
+description: |
+  Detects a member being added to the local Administrators group (4732), to Domain Admins (4728),
+  or to Enterprise / Schema Admins (4756). Matching is done on well-known SIDs, so it works whatever the OS language.
+references:
+  - https://attack.mitre.org/techniques/T1098/
+  - https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.persistence
+  - attack.privilege-escalation
+  - attack.t1098
+logsource:
+  product: windows
+  service: security
+detection:
+  selection_local_admins:
+    EventID: 4732
+    TargetSid: 'S-1-5-32-544'
+  selection_domain_admins:
+    EventID: 4728
+    TargetSid|endswith: '-512'
+  selection_forest_admins:
+    EventID: 4756
+    TargetSid|endswith:
+      - '-518'
+      - '-519'
+  condition: 1 of selection_*
+falsepositives:
+  - Approved administrative changes; correlate with a change ticket
+level: high
