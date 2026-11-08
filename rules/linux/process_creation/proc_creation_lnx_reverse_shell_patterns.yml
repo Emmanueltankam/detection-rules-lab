@@ -1,0 +1,36 @@
+title: Linux Reverse Shell Command Patterns
+id: de19b6d8-cbc0-4250-8572-d96f96754561
+status: test
+description: |
+  Detects common reverse shell one-liners: bash redirections to /dev/tcp or /dev/udp,
+  and netcat started with an execute option (-e / -c) that binds a shell to a network connection.
+references:
+  - https://attack.mitre.org/techniques/T1059/004/
+  - https://gtfobins.github.io/gtfobins/nc/
+author: Emmanuel Tankam Talla
+date: 2026-11-08
+tags:
+  - attack.execution
+  - attack.t1059.004
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection_dev_tcp:
+    CommandLine|contains:
+      - '/dev/tcp/'
+      - '/dev/udp/'
+  selection_nc_img:
+    Image|endswith:
+      - '/nc'
+      - '/ncat'
+      - '/netcat'
+      - '/nc.traditional'
+  selection_nc_exec:
+    CommandLine|contains:
+      - ' -e '
+      - ' -c '
+  condition: selection_dev_tcp or (selection_nc_img and selection_nc_exec)
+falsepositives:
+  - Network troubleshooting scripts using bash /dev/tcp to test port reachability
+level: high
